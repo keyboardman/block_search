@@ -12,7 +12,6 @@ function block_search_block_info(){
   return $block;
 }
 
-
 /*
  *  Implement hook_block_view()
  */
@@ -38,10 +37,10 @@ function el_search_form($form, &$form_state){
   $form['search_type'] = array(
     '#type' => 'select',
     '#options' => array(
-      'emploi' => 'emploi',
-      'service' => 'service',
-      'logement' => 'logement',
-      'co-location' => 'co-location'),
+      'emploi/recherche2' => 'emploi',
+      'service/recherche3/proposition' => 'service',
+      'logement/recherche' => 'logement',
+      'colocation/recherche' => 'co-location'),
   );
   $form['submit'] = array(
     '#type' => 'submit',
@@ -50,8 +49,23 @@ function el_search_form($form, &$form_state){
   );
   $form['#attached']['css'] = array(
     drupal_get_path('module', 'block_search').'/block_search.css',
-  );
+  ); 
   return $form;
 }
 
+function el_search_form_validate($form, &$form_state){
+  
+}
 
+function el_search_form_submit($form, &$form_state){
+  $url =  $form_state['values']['search_type'];
+  $key = str_replace(' ', '+',$form_state['values']['keyword']);
+  $form_state['redirect'] = array(
+    $url,
+    array(
+      'query' => array(
+        'keys' => $key,
+      ),
+    ),
+  );
+}
