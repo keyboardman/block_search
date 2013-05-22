@@ -1,0 +1,57 @@
+<?php 
+
+/*
+ *  Implement hook_block_info()
+ */
+
+function block_search_block_info(){
+  $block = array();
+  $block['search_el'] = array(
+    'info' => t('Bloc Recherche E.L.'),   
+  );  
+  return $block;
+}
+
+
+/*
+ *  Implement hook_block_view()
+ */
+  
+function block_search_block_view($delta = ''){
+  $block = array();
+  switch($delta){
+    case 'search_el':
+      $block['subject']= t('');
+      $block['content']= drupal_get_form('el_search_form');
+      break;   
+  } 
+  return $block;
+}
+
+
+function el_search_form($form, &$form_state){
+  $form =array();
+  $form['keyword'] = array(
+    '#type' => 'textfield',
+    '#prefix' =>'<div class="container-inline">',
+  );
+  $form['search_type'] = array(
+    '#type' => 'select',
+    '#options' => array(
+      'emploi' => 'emploi',
+      'service' => 'service',
+      'logement' => 'logement',
+      'co-location' => 'co-location'),
+  );
+  $form['submit'] = array(
+    '#type' => 'submit',
+    '#value' => 'Rechercher',
+    '#suffix' => '</div>',
+  );
+  $form['#attached']['css'] = array(
+    drupal_get_path('module', 'block_search').'/block_search.css',
+  );
+  return $form;
+}
+
+
